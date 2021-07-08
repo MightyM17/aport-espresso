@@ -1,0 +1,46 @@
+# Maintainer: Mighty17 <mightymb17@gmail.com>
+# Co-Maintainer: Antoni Aloy <aaloytorrens@gmail.com>
+# Reference: <https://postmarketos.org/devicepkg>
+pkgname=device-samsung-espresso3g
+pkgdesc="Samsung Galaxy Tab 2 3g (7.0 inch)"
+pkgver=0.2
+pkgrel=2
+url="https://postmarketos.org"
+license="MIT"
+arch="armv7"
+options="!check !archcheck"
+depends="postmarketos-base linux-samsung-espresso3g mkbootimg"
+makedepends="devicepkg-dev"
+install="$pkgname.post-install $pkgname.post-upgrade"
+source="
+	deviceinfo
+	01-disable-animations
+	"
+subpackages="$pkgname-phosh $pkgname-nonfree-firmware:nonfree_firmware""
+
+build() {
+	devicepkg_build $startdir $pkgname
+}
+
+package() {
+	devicepkg_package $startdir $pkgname
+}
+
+nonfree_firmware() {
+	pkgdesc="Wifi firmware"
+	depends="firmware-samsung-espresso3g"
+	mkdir "$subpkgdir"
+}
+
+phosh() {
+	install_if="$pkgname=$pkgver-r$pkgrel postmarketos-ui-phosh"
+	mkdir "$subpkgdir"
+	install -Dm755 "$srcdir"/01-disable-animations \
+		"$pkgdir"/etc/dconf/db/postmarketos.d/03-disable-animations
+}
+
+
+sha512sums="
+986f5947105eeea9773dae033998e9bb9d4e4f6406f99478bfeb0925ca25493160e2c065ae2e5ae7e39e6ecd1a1d0c461cdb5fc532b23ecf5a1ca9414c0b5438  deviceinfo
+2f21ee3facd335963ef19b82b854fbd8768c96c67522ab8b7ca71ad6a54f47f245638c4bb8b5c59073ff44a67fe96f2388a005dbc4f6f41106c7f84a68d26bff  01-disable-animations
+"
