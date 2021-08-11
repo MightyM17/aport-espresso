@@ -10,7 +10,7 @@ license="GPL2"
 options="!strip !check !tracedeps pmb:cross-native"
 makedepends="openssl-dev yaml-dev mpc1-dev mpfr-dev xz findutils bison flex perl sed installkernel bash gmp-dev bc linux-headers elfutils-dev devicepkg-dev"
 _repository="linux"
-_commit="d2b98816716eafad66e507a93277de57ff968db7"
+_commit="1c1df9a145ef1773ede24f6fc1c446026cb62066"
 _config="config-$_flavor.$arch"
 source="
 	$pkgname-$pkgver.tar.gz::https://github.com/MightyM17/linux_openpvrsgx/archive/$_commit.tar.gz
@@ -55,5 +55,5 @@ package() {
 
 sha512sums="
 474677e5660ede0bb8d101cd2df30d7f1d9b33078737f796b7aa64878b82d94114ecef4e25ccf4ad3a4b1acc046fd321f900e55582175dfefebc4cc53636a0d4  linux-samsung-espresso3g-5.12.tar.gz
-e25e27e1d6a5c5751b7eb47a2ed37771878469c2060d0fbf7eba4b34ea56da6df4935442c466c09731453f75af86985bea425c5237cd703d86169e10f89e59e8  config-samsung-espresso3g.armv7
+bb16a3389ff9e7d463e77f6245047013d29af7c6a76cfa76cf6e410bd61a9be52b72a08308dc056c1034a3f1d93f998bf91f73cf593436cbf4c910d542116108  config-samsung-espresso3g.armv7
 "
