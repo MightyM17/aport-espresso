@@ -1,6 +1,6 @@
 pkgname=linux-samsung-espresso3g
-pkgver=5.12
-pkgrel=0
+pkgver=5.12_rc1
+pkgrel=1
 pkgdesc="Samsung Galaxy Tab 2 (7.0 inch) mainline kernel"
 arch="armv7"
 _carch="arm"
@@ -8,52 +8,40 @@ _flavor="samsung-espresso3g"
 url="https://kernel.org"
 license="GPL2"
 options="!strip !check !tracedeps pmb:cross-native"
-makedepends="openssl-dev yaml-dev mpc1-dev mpfr-dev xz findutils bison flex perl sed installkernel bash gmp-dev bc linux-headers elfutils-dev devicepkg-dev"
-_repository="linux"
-_commit="1c1df9a145ef1773ede24f6fc1c446026cb62066"
+makedepends="openssl-dev yaml-dev mpc1-dev mpfr-dev xz findutils bison flex perl sed installkernel bash gmp-dev bc linux-headers elfutils-dev"
+_commit="cf34a37251a0133a8d4648b8ac8aba38b41fddf7"
 _config="config-$_flavor.$arch"
 source="
-	$pkgname-$pkgver.tar.gz::https://github.com/MightyM17/linux_openpvrsgx/archive/$_commit.tar.gz
+	$pkgname-$_commit.tar.gz::https://github.com/MightyM17/linux_openpvrsgx/archive/$_commit.tar.gz
 	$_config
-	"
+"
 builddir="$srcdir/linux_openpvrsgx-$_commit"
 
 prepare() {
-	mkdir -p "$srcdir"/build
-	cp -v "$srcdir"/$_config "$srcdir"/build/.config
-	make -C "$builddir" O="$srcdir"/build ARCH="$_carch" \
-		olddefconfig
+	default_prepare
+	cp "$srcdir/config-$_flavor.$arch" .config
 }
 
 build() {
-	cd "$srcdir"/build
 	unset LDFLAGS
 	make ARCH="$_carch" CC="${CC:-gcc}" \
 		KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-postmarketOS"
 }
 
 package() {
-	install -Dm644 "$srcdir/build/arch/$_carch/boot/"*zImage \
+	install -Dm644 "$builddir/arch/$_carch/boot/"*zImage \
 		"$pkgdir/boot/vmlinuz-$_flavor"
 
-	install -D "$srcdir/build/include/config/kernel.release" \
-		"$pkgdir/usr/share/kernel/$_flavor/kernel.release"
+	install -D "$builddir"/include/config/kernel.release \
+		"$pkgdir"/usr/share/kernel/$_flavor/kernel.release
 
-	cd "$srcdir"/build
-
-	local _install
-	case "$CARCH" in
-	aarch64*|arm*)	_install="modules_install dtbs_install" ;;
-	*)		_install="modules_install" ;;
-	esac
-
-	make -j1 $_install \
+	make -j1 modules_install dtbs_install \
 		ARCH="$_carch" \
 		INSTALL_MOD_PATH="$pkgdir" \
 		INSTALL_DTBS_PATH="$pkgdir/usr/share/dtb"
 }
 
 sha512sums="
-474677e5660ede0bb8d101cd2df30d7f1d9b33078737f796b7aa64878b82d94114ecef4e25ccf4ad3a4b1acc046fd321f900e55582175dfefebc4cc53636a0d4  linux-samsung-espresso3g-5.12.tar.gz
-bb16a3389ff9e7d463e77f6245047013d29af7c6a76cfa76cf6e410bd61a9be52b72a08308dc056c1034a3f1d93f998bf91f73cf593436cbf4c910d542116108  config-samsung-espresso3g.armv7
+3f40d79314e36555b350ec395b476a144cf8a8a11cb2b1bd599ee6af2d8627cd12fe2f7fa9cfb4749fe82056b989903dfac6d254448cc90e2b1aeb1ede3947e5  linux-samsung-espresso3g-cf34a37251a0133a8d4648b8ac8aba38b41fddf7.tar.gz
+d83000bc9abe599d64fc41c0e87a232f7c753e3f50e33ee237ec8356a32f8ecea3b8b35a40fad27d6e99da956ee9d71b1546f94119d654c31b54fdbe9414cef9  config-samsung-espresso3g.armv7
 "

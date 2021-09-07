@@ -3,17 +3,15 @@
 # Reference: <https://postmarketos.org/devicepkg>
 pkgname=device-samsung-espresso3g
 pkgdesc="Samsung Galaxy Tab 2 3g (7.0 inch)"
-pkgver=0.2
-pkgrel=4
+pkgver=0.1
+pkgrel=1
 url="https://postmarketos.org"
 license="MIT"
 arch="armv7"
 options="!check !archcheck"
 depends="postmarketos-base linux-samsung-espresso3g mkbootimg"
 makedepends="devicepkg-dev"
-source="
-	deviceinfo
-	"
+source="deviceinfo"
 subpackages="$pkgname-nonfree-firmware:nonfree_firmware"
 
 build() {
@@ -31,5 +29,5 @@ nonfree_firmware() {
 }
 
 sha512sums="
-986f5947105eeea9773dae033998e9bb9d4e4f6406f99478bfeb0925ca25493160e2c065ae2e5ae7e39e6ecd1a1d0c461cdb5fc532b23ecf5a1ca9414c0b5438  deviceinfo
+b313e358107ea1ba762c52e5aeebce2ba5707b835f38c01e05bb30781787a272a95d06bc2603cd2134b9f51e01d1b70b29981de6c9837e482a283f548f433d1d  deviceinfo
 "
